@@ -17,4 +17,6 @@ COPY --from=builder /app/dist ./dist
 
 RUN npm install -g vite
 
-CMD ["vite", "preview", "--port", "3000", "--host"]
+EXPOSE 4173
+
+CMD ["vite", "preview", "--port", "4173", "--host"]
