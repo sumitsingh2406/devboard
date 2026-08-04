@@ -6,7 +6,7 @@ WORKDIR /app
 COPY package*.json ./
 
 RUN npm install
-RUN npm install vite
+RUN npm install vite@7
 RUN npm run build
 
 #stage2
