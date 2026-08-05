@@ -1,26 +1,28 @@
-FROM dhi.io/golang:1-alpine AS builder
+#STAGE1 
+FROM golang:1.24 as builder
 
+#Setting the Current Working Directory inside the container
 WORKDIR /app
 
+#Copying the go.mod and go.sum files to the working directory
 COPY go.mod go.sum ./
+
+#to download all the dependencies(libraries) of the project
 RUN go mod download
 
 COPY . .
-RUN CGO_ENABLED=0 go build -o devboard-backend .
 
-FROM dhi.io/golang:1-alpine
+RUN CGO_ENABLED=0 GOOS=linux go build -o server .
 
+#stage2 
+FROM golang:1.24-alpine
+
+#Setting the Current Working Directory inside the container
 WORKDIR /app
 
-COPY --from=builder /app/devboard-backend ./devboard-backend
-
-# Ensure binary is executable
-RUN chmod +x ./devboard-backend
-
-# DHI image runs as nonroot by default
-USER nonroot
+#Copying the Pre-built binary file from the previous stage
+COPY --from=builder /app/server /app/server
 
 EXPOSE 8080
 
-# Use exec form for proper signal handling
-ENTRYPOINT ["./devboard-backend"]
+CMD ["/app/server"]
