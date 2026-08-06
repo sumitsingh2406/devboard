@@ -8,14 +8,16 @@ services:
       POSTGRES_DB: devboard
     volumes:
       - /init/postgres:/var/lib/postgresql/data
-      
+    networks:
+      - devboard-network  
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      test: ["CMD-SHELL", "pg_isready -U devboard"]
       interval: 10s
       timeout: 5s
       retries: 10
+   
   
   backend:
     build: ./backend
@@ -27,6 +29,8 @@ services:
         condition: service_healthy
     ports:
       - "8080:8080"
+    networks:
+      - devboard-network
 
   frontend:
     build: ./frontend
@@ -36,3 +40,5 @@ services:
         condition: service_healthy
     ports:
       - "4173:4173"
+    networks:
+      - devboard-network
