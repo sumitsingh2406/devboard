@@ -3,9 +3,9 @@ services:
     image: postgres:latest
     container_name: postgres_container
     environment:
-      POSTGRES_USER: devboard
-      POSTGRES_PASSWORD: dev1234
-      POSTGRES_DB: devboard
+      POSTGRES_USER:devboard
+      POSTGRES_PASSWORD:dev1234
+      POSTGRES_DB:devboard
     volumes:
       - /init/postgres:/var/lib/postgresql/data
     networks:
@@ -23,7 +23,7 @@ services:
     build: ./backend
     container_name: devboard-backend
     environment:
-      DATABASE_URL: postgres://${devboard}:${dev1234}@postgres:5432/${POSTGRES_DB}
+      DATABASE_URL: postgres://devboard:dev1234@postgres:5432/devboard}
     depends_on:
       postgres:
         condition: service_healthy
