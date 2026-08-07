@@ -39,3 +39,5 @@ services:
   
 network:
    - devboard-network
+volume: 
+   pgdata:
