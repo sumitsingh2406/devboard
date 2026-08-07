@@ -3,13 +3,12 @@ services:
     image: postgres:latest
     container_name: postgres_container
     environment:
-      POSTGRES_USER:devboard
-      POSTGRES_PASSWORD:dev1234
-      POSTGRES_DB:devboard
+      POSTGRES_USER: ${POSTGRES_USER}
+    POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     volumes:
-      - /init/postgres:/var/lib/postgresql/data
-    networks:
-      - devboard-network  
+       - pgdata:/var/lib/postgresql/data
+      - ./init/postgres:/docker-entrypoint-initdb.d:ro  
     ports:
       - "5432:5432"
     healthcheck:
@@ -18,19 +17,16 @@ services:
       timeout: 5s
       retries: 10
    
-  
   backend:
     build: ./backend
     container_name: devboard-backend
     environment:
-      DATABASE_URL: postgres://devboard:dev1234@postgres:5432/devboard}
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}}
     depends_on:
       postgres:
         condition: service_healthy
     ports:
       - "8080:8080"
-    networks:
-      - devboard-network
 
   frontend:
     build: ./frontend
@@ -40,5 +36,6 @@ services:
         condition: service_healthy
     ports:
       - "4173:4173"
-    networks:
-      - devboard-network
+  
+network:
+   - devboard-network
