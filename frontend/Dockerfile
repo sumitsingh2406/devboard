@@ -28,7 +28,7 @@ WORKDIR /app
 COPY --from=builder /app/dist ./dist
 
 #copy all the modules downloaded in /app/note_module and paste inside the container in ./node_modules
-COPY --from=builder /app/note_modules ./node_modules
+COPY --from=builder /app/node_modules ./node_modules
 
 
 COPY vite.preview.config.js ./vite.config.js
