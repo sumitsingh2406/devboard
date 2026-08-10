@@ -1,5 +1,5 @@
 #stage1
-FROM node:24 as builder
+FROM node:26 as builder
 
 #this is a working directory creating inside the container to run
 WORKDIR /app
@@ -20,7 +20,7 @@ COPY . .
 RUN npm run build
 
 #stage2
-FROM node:26-alpine
+FROM node:26
 
 WORKDIR /app
 
