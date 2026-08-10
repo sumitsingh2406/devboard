@@ -11,7 +11,7 @@ COPY package*.json ./
 RUN npm install  --legacy-peer-deps
 
 #checking vite already exist or not, if not then install the vite@5.4.11
-RUN npm list vite >/dev/null 2>&1 || npn install vite@5.4.11
+RUN npm list vite >/dev/null 2>&1 || npm install vite@5.4.11
 
 #copy of code to container 
 COPY . .
